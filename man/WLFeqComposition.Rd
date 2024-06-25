@@ -30,7 +30,7 @@ A dataframe with the mean weight of catches at length
 Main class to build frequency matrices out of weight and lengths
 }
 \section{Super class}{
-\code{utpbwlfq::MixinUtilities} -> \code{WLFeqComposition}
+\code{\link[utpbwlfq:MixinUtilities]{utpbwlfq::MixinUtilities}} -> \code{WLFeqComposition}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}

@@ -4,7 +4,7 @@
 \alias{MixinUtilities}
 \title{Mixin Utility class}
 \description{
-class that holds a few util methods used across all classes in the this R package
+It holds a few util methods used across all classes in the this R package
 }
 \section{Methods}{
 \subsection{Public methods}{

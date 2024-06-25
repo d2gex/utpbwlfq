@@ -1,4 +1,4 @@
-#' @titleMixin Utility class
+#' @title Mixin Utility class
 #'
 #' @description
 #' It holds a few util methods used across all classes in the this R package

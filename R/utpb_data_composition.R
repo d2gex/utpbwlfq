@@ -1,17 +1,17 @@
 #' @title UtpbDataComposition  Class
 #'
 #' @description
-#' Custom class to build the catches and mean-weight matrcies for the UTPB database
+#' Custom class to build the catches and mean-weight matrices for the UTPB database
 UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolint
   #' @field data a long dataframe with the length and weight data
   data = NULL,
-  #' @field interval_col name of the column that will hold the size interval (as opposed to midpoints)
+  #' @field time_col name of the column that holds dates
   time_col = NULL,
   #' @field size_col name of the column that holds lengths
   size_col = NULL,
   #' @field weight_col name of the column that holds weights
   weight_col = NULL,
-  #' @field mean_weight_col name of the column that will hold the meanweights
+  #' @field mean_weight_col name of the column that will hold the mean weights
   mean_weight_col = NULL,
   #' @field interval_col name of the column that will hold the size interval (as opposed to midpoints)
   interval_col = NULL,
@@ -21,6 +21,7 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
   freq_col = NULL,
   #' @field composition_results name of the column that will hold the the length totals per class
   composition_results = NULL,
+  #' @field linf asymptotic length
   linf = NULL,
 
   # // @formatter:off
@@ -28,15 +29,7 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
   #' Initialise the SpeciesDataComposition
   #'
   #' @param data a long dataframe with the length and weight data about a single species
-  #' @param time_col name of the column that holds dates
-  #' @param size_col name of the column that holds lengths
-  #' @param weight_col name of the column that holds weights
-  #' @param mean_weight_col name of the column that will hold mean weights
-  #' @param interval_col name of the column that will hold the size interval
-  #' (as opposed to midpoints)
-  #' @param midpoint_col name of the column that will hold the length classes
-  #' @param freq_col name of the column that will hold the the length totals per class
-  #' @param linf asymptotic length
+  #' @param sp_arte_context a DataCompositionContext class
   #' @export
   # // @formatter:on
   initialize = function(data, sp_arte_context) {
