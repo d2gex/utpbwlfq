@@ -1,7 +1,7 @@
-#' Mixin Utility class
+#' @titleMixin Utility class
 #'
 #' @description
-#' class that holds a few util methods used across all classes in the this R package
+#' It holds a few util methods used across all classes in the this R package
 MixinUtilities <- R6::R6Class("MixinUtilities", public = list( # nolint
 
   # // @formatter:off

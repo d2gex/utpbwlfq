@@ -49,7 +49,7 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
     self$midpoint_col <- sp_arte_context$midpoint_col
     self$freq_col <- sp_arte_context$freq_col
     self$linf <- sp_arte_context$linf
-    self$composition_results <- LCLWHolder$new()
+    self$composition_results <- DataCompositionContainer$new()
   },
   # // @formatter:off
   #' @description
