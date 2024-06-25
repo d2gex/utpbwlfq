@@ -57,7 +57,7 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
   # // @formatter:on
   build_catch_at_length = function(bindwidth, col_prefix, min_padding, up_to_linf = TRUE) {
     # Catch at length and mean weigh composition generator
-    composition <- CatchWeightComposition$new(
+    composition <- WLFeqComposition$new(
       self$data,
       self$size_col,
       self$weight_col,
@@ -68,7 +68,7 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
       self$linf
     )
     summary_catch <- composition$
-      generate_catch_at_length_composition(bindwidth, min_padding, up_to_linf)
+      generate_catch_at_length(bindwidth, min_padding, up_to_linf)
     summary_catch_long_wide <-
       private$build_long_wide_variable_composition_matrix(
         summary_catch,
@@ -90,11 +90,11 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
   #' @param up_to_linf boolean flag indicating whether the length classed should be capped
   #' @export
   # // @formatter:on
-  build_talla_and_weight_composition_matrices = function(bindwidth, col_prefix, min_padding, up_to_linf = TRUE) {
+  build_catch_and_mean_weight_at_length = function(bindwidth, col_prefix, min_padding, up_to_linf = TRUE) {
     data <- self$data %>%
       dplyr::filter_at(.vars = self$weight_col, not_na)
     # Catch at length and mean weigh composition generator
-    composition <- CatchWeightComposition$new(
+    composition <- WLFeqComposition$new(
       data,
       self$size_col,
       self$weight_col,
@@ -106,7 +106,7 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
     )
     # (1) Generate catch and mean-weight
     catch_mean_weight_at_length <-
-      composition$generate_catch_and_m.weight_at_length_composition(bindwidth, min_padding = 1, up_to_linf)
+      composition$generate_catch_and_mean_weight_at_length(bindwidth, min_padding = 1, up_to_linf)
 
     # (2) Build long and wide catch-at-length dataframe
     catch_details <- catch_mean_weight_at_length %>% dplyr::select(-!!self$mean_weight_col)
@@ -142,12 +142,12 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
 
     # return wide frame
     summary_wide <- summary_long %>%
-      dplyr::pivot_wider(id_cols = -!!self$interval_col, names_from = !!self$time_col, values_from = !!variable)
+      pivot_wider(id_cols = -!!self$interval_col, names_from = !!self$time_col, values_from = !!variable)
     summary_wide <- summary_wide %>%
       dplyr::mutate_at(vars(-self$midpoint_col), replace_na, 0) %>%
       dplyr::rename_with(~ stringr::str_c(col_prefix, .x), tidyr::matches("^\\d{4}$"))
 
-    summary_wide %>% assertr::assert(assertr::not_na, colnames(.), success_fun = NULL)
+    summary_wide %>% assertr::assert(assertr::not_na, colnames(.), success_fun = assertr::success_logical)
     return(list(long = summary_long, wide = summary_wide))
   }
 ))
