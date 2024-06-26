@@ -142,7 +142,7 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
 
     # return wide frame
     summary_wide <- summary_long %>%
-      pivot_wider(id_cols = -!!self$interval_col, names_from = !!self$time_col, values_from = !!variable)
+      tidyr::pivot_wider(id_cols = -!!self$interval_col, names_from = !!self$time_col, values_from = !!variable)
     summary_wide <- summary_wide %>%
       dplyr::mutate_at(vars(-self$midpoint_col), replace_na, 0) %>%
       dplyr::rename_with(~ stringr::str_c(col_prefix, .x), tidyr::matches("^\\d{4}$"))
