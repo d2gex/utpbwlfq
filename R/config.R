@@ -3,7 +3,7 @@
 #' @description
 #' A class container that holds the long and wide catch-at-length and mean-weight-at-length dataframes
 #' @export
-DataCompositionContainer <- R6Class("DataCompositionContainer", public = list( # nolint
+DataCompositionContainer <- R6::R6Class("DataCompositionContainer", public = list( # nolint
   # (1)  Length Composition (lengths), ignoring the values of weight column
   catch_long_t = NULL,
   catch_wide_t = NULL,
@@ -21,7 +21,7 @@ DataCompositionContainer <- R6Class("DataCompositionContainer", public = list( #
 #' @description
 #' A class that provide context about
 #' @export
-DataCompositionContext <- R6Class("DataCompositionContext", public = list( # nolint
+DataCompositionContext <- R6::R6Class("DataCompositionContext", public = list( # nolint
   bindwidth = 1, # cm
   time_col = "year",
   size_col = "TALLA",
