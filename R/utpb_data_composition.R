@@ -19,8 +19,6 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
   midpoint_col = NULL,
   #' @field freq_col name of the column that will hold the the length totals per class
   freq_col = NULL,
-  #' @field composition_results name of the column that will hold the the length totals per class
-  composition_results = NULL,
   #' @field linf asymptotic length
   linf = NULL,
 
@@ -42,7 +40,6 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
     self$midpoint_col <- sp_arte_context$midpoint_col
     self$freq_col <- sp_arte_context$freq_col
     self$linf <- sp_arte_context$linf
-    self$composition_results <- DataCompositionContainer$new()
   },
   # // @formatter:off
   #' @description
@@ -53,11 +50,12 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
   #' @param col_prefix prefix added to the each column representing a year
   #' @param min_padding padding that is substracted to the minimum length class
   #' @param up_to_linf boolean flag indicating whether the length classed should be capped
+  #' @returns a composition result object with both long and wide catch-at-length
   #' @export
   # // @formatter:on
   build_catch_at_length = function(bindwidth, col_prefix, min_padding, up_to_linf = TRUE) {
-    # Catch at length and mean weigh composition generator
-    composition <- WLFeqComposition$new(
+    composition_results <- DataCompositionContainer$new()
+    catch_compositor <- WLFeqComposition$new(
       self$data,
       self$size_col,
       self$weight_col,
@@ -67,7 +65,7 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
       self$freq_col,
       self$linf
     )
-    summary_catch <- composition$
+    summary_catch <- catch_compositor$
       generate_catch_at_length(bindwidth, min_padding, up_to_linf)
     summary_catch_long_wide <-
       private$build_long_wide_variable_composition_matrix(
@@ -75,8 +73,9 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
         col_prefix,
         self$freq_col
       )
-    self$composition_results$catch_long_t <- summary_catch_long_wide$long
-    self$composition_results$catch_wide_t <- summary_catch_long_wide$wide
+    composition_results$catch_long_t <- summary_catch_long_wide$long
+    composition_results$catch_wide_t <- summary_catch_long_wide$wide
+    return(composition_results)
   },
 
   # // @formatter:off
@@ -87,14 +86,22 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
   #' @param bindwidth size of each length class
   #' @param col_prefix prefix added to the each column representing a year
   #' @param min_padding padding that is substracted to the minimum length class
+  #' @param weight_na_as value to replace NA weights
   #' @param up_to_linf boolean flag indicating whether the length classed should be capped
+  #' @returns a composition result object with both long and wide dataframes for both catch and mean-weight at length
   #' @export
   # // @formatter:on
-  build_catch_and_mean_weight_at_length = function(bindwidth, col_prefix, min_padding, up_to_linf = TRUE) {
+  build_catch_and_mean_weight_at_length = function(bindwidth,
+                                                   col_prefix,
+                                                   min_padding = 0,
+                                                   weight_na_as = 0,
+                                                   up_to_linf = TRUE) {
     data <- self$data %>%
       dplyr::filter_at(.vars = self$weight_col, not_na)
+
     # Catch at length and mean weigh composition generator
-    composition <- WLFeqComposition$new(
+    composition_results <- DataCompositionContainer$new()
+    catch_weight_compositor <- WLFeqComposition$new(
       data,
       self$size_col,
       self$weight_col,
@@ -106,13 +113,18 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
     )
     # (1) Generate catch and mean-weight
     catch_mean_weight_at_length <-
-      composition$generate_catch_and_mean_weight_at_length(bindwidth, min_padding = 1, up_to_linf)
+      catch_weight_compositor$generate_catch_and_mean_weight_at_length(
+        bindwidth,
+        weight_na_as,
+        min_padding,
+        up_to_linf
+      )
 
     # (2) Build long and wide catch-at-length dataframe
     catch_details <- catch_mean_weight_at_length %>% dplyr::select(-!!self$mean_weight_col)
     summary_catch <- private$build_long_wide_variable_composition_matrix(catch_details, col_prefix, self$freq_col)
-    self$composition_results$catch_long_wt <- summary_catch$long
-    self$composition_results$catch_wide_wt <- summary_catch$wide
+    composition_results$catch_long_wt <- summary_catch$long
+    composition_results$catch_wide_wt <- summary_catch$wide
 
     # (3) Build long and wide mean-weight-at-length dataframe
     mean_weight_details <- catch_mean_weight_at_length %>% dplyr::select(-!!self$freq_col)
@@ -124,8 +136,9 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
       self$mean_weight_col,
       converter_func = to_kg
     )
-    self$composition_results$mwl <- summary_mean_weight$long
-    self$composition_results$mww <- summary_mean_weight$wide
+    composition_results$mwl <- summary_mean_weight$long
+    composition_results$mww <- summary_mean_weight$wide
+    return(composition_results)
   }
 ), private = list(
   build_long_wide_variable_composition_matrix = function(data,
