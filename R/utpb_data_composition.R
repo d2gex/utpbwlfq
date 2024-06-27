@@ -144,7 +144,7 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
     summary_wide <- summary_long %>%
       tidyr::pivot_wider(id_cols = -!!self$interval_col, names_from = !!self$time_col, values_from = !!variable)
     summary_wide <- summary_wide %>%
-      dplyr::mutate_at(.vars(-self$midpoint_col), tidyr::replace_na, 0) %>%
+      dplyr::mutate_at(dplyr::vars(-self$midpoint_col), tidyr::replace_na, 0) %>%
       dplyr::rename_with(~ stringr::str_c(col_prefix, .x), tidyr::matches("^\\d{4}$"))
 
     summary_wide %>% assertr::assert(assertr::not_na, colnames(.), success_fun = assertr::success_logical)
