@@ -97,7 +97,7 @@ UtpbDataComposition <- R6::R6Class("UtpbDataComposition", public = list( # nolin
                                                    weight_na_as = 0,
                                                    up_to_linf = TRUE) {
     data <- self$data %>%
-      dplyr::filter_at(.vars = self$weight_col, not_na)
+      dplyr::filter_at(.vars = self$weight_col, assertr::not_na)
 
     # Catch at length and mean weigh composition generator
     composition_results <- DataCompositionContainer$new()
