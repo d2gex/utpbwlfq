@@ -122,6 +122,9 @@ WLFeqComposition <- R6::R6Class("WLFeqComposition", # nolint
     generate_interval_and_midpoint_sequences = function(bindwidth,
                                                         min_padding = 0,
                                                         up_to_linf = TRUE) {
+      if (up_to_linf & is.null(self$linf)) {
+        stop("You need to provide a finite value to 'linf' if the flag 'up_to_linf' is set to TRUE.")
+      }
       min_size <- floor(min(self$data[, self$size_col])) - min_padding
       max_size <- ceiling(max(self$data[, self$size_col]))
       if (up_to_linf) {
