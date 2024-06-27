@@ -100,7 +100,7 @@ WLFeqComposition <- R6::R6Class("WLFeqComposition", # nolint
           interval_midpoints$mid_points
         )
       size_intervas_weight_df <-
-        private$generate_length_intervals(interval_midpoints$size_intervals)
+        private$generate_at_length_dataframe(interval_midpoints$size_intervals)
       mean_weight_at_length <-
         private$generate_mean_weight_at_length_df(size_intervas_weight_df)
       catch_mean_weight_length <- merge(catch_at_length,
@@ -109,7 +109,7 @@ WLFeqComposition <- R6::R6Class("WLFeqComposition", # nolint
         all = TRUE
       )
       catch_mean_weight_length <- catch_mean_weight_length %>%
-        dplyr::replace_na(list(mean_weight = weight_na_as))
+        tidyr::replace_na(list(mean_weight = weight_na_as))
       return(catch_mean_weight_length)
     }
   ),
