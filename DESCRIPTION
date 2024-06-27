@@ -17,6 +17,7 @@ Depends:
 Imports:
     assertr,
     dplyr,
+    magrittr,
     R6,
     stringr,
     testit,

@@ -4,7 +4,7 @@
 \alias{UtpbDataComposition}
 \title{UtpbDataComposition  Class}
 \description{
-Custom class to build the catches and mean-weight matrcies for the UTPB database
+Custom class to build the catches and mean-weight matrices for the UTPB database
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -17,7 +17,7 @@ Custom class to build the catches and mean-weight matrcies for the UTPB database
 
 \item{\code{weight_col}}{name of the column that holds weights}
 
-\item{\code{mean_weight_col}}{name of the column that will hold the meanweights}
+\item{\code{mean_weight_col}}{name of the column that will hold the mean weights}
 
 \item{\code{interval_col}}{name of the column that will hold the size interval (as opposed to midpoints)}
 
@@ -36,7 +36,7 @@ Custom class to build the catches and mean-weight matrcies for the UTPB database
 \itemize{
 \item \href{#method-UtpbDataComposition-new}{\code{UtpbDataComposition$new()}}
 \item \href{#method-UtpbDataComposition-build_catch_at_length}{\code{UtpbDataComposition$build_catch_at_length()}}
-\item \href{#method-UtpbDataComposition-build_talla_and_weight_composition_matrices}{\code{UtpbDataComposition$build_talla_and_weight_composition_matrices()}}
+\item \href{#method-UtpbDataComposition-build_catch_and_mean_weight_at_length}{\code{UtpbDataComposition$build_catch_and_mean_weight_at_length()}}
 \item \href{#method-UtpbDataComposition-clone}{\code{UtpbDataComposition$clone()}}
 }
 }
@@ -89,13 +89,13 @@ not debugged, therefore it could be NA
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-UtpbDataComposition-build_talla_and_weight_composition_matrices"></a>}}
-\if{latex}{\out{\hypertarget{method-UtpbDataComposition-build_talla_and_weight_composition_matrices}{}}}
-\subsection{Method \code{build_talla_and_weight_composition_matrices()}}{
+\if{html}{\out{<a id="method-UtpbDataComposition-build_catch_and_mean_weight_at_length"></a>}}
+\if{latex}{\out{\hypertarget{method-UtpbDataComposition-build_catch_and_mean_weight_at_length}{}}}
+\subsection{Method \code{build_catch_and_mean_weight_at_length()}}{
 Build a year-basis catch-at-length and mean-weight composition matrices both in long and wide format
 (4 matrices, 2 for catch_at_length and 2 for mean-weight)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{UtpbDataComposition$build_talla_and_weight_composition_matrices(
+\if{html}{\out{<div class="r">}}\preformatted{UtpbDataComposition$build_catch_and_mean_weight_at_length(
   bindwidth,
   col_prefix,
   min_padding,
